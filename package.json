@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.2.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-scripts": "5.0.1",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.8.0",
+    "@octokit/core": "^3.6.0",
+    "@ramsey-design-system/button": "^2.3.0",
+    "@ramsey-design-system/data-table": "^1.0.0",
+    "@ramsey-design-system/heading": "^1.0.5",
+    "@ramsey-design-system/icons": "^2.5.0",
+    "@ramsey-design-system/link": "^1.6.4",
+    "react-scripts": "^5.0.0",
+    "sass": "^1.51.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -34,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.2"
   }
 }
