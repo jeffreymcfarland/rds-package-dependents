@@ -44,7 +44,9 @@ function App() {
       setTotal(dependentsArray.length);
       setDependents(dependentsArray);
     } else {
-      data = await searchPackageDependents(packageName.split(" ").join(""));
+      data = await searchPackageDependents(
+        packageName.toLowerCase().split(" ").join("-")
+      );
       data.items.forEach((item) => {
         if (item.repository.name !== "ramsey-design-system") {
           dependentsArray.push({
