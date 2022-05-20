@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./App.scss";
 import { searchPackageDependents } from "./SearchHandlers";
 
 import DataTable from "@ramsey-design-system/data-table";
@@ -65,10 +64,14 @@ function App() {
 
   return (
     <div className="App">
-      <Heading level="1" color="brand" size="large" style={{ padding: 16 }}>
+      <Heading
+        level="1"
+        size="large"
+        style={{ padding: 24, textAlign: "center" }}
+      >
         RDS Package Dependents
       </Heading>
-      <DataTable style={{ padding: 24 }} size="large" striped>
+      <DataTable size="large" striped>
         <DataTable.Head>
           <tr>
             <th>{packageDependentsTotal} Repositories</th>
@@ -102,7 +105,9 @@ function App() {
           {dependents.map((item, index) => (
             <tr key={index}>
               <td colSpan={2}>
-                <Link href={item.url}>{item.repo}</Link>
+                <Link href={item.url} target="_blank">
+                  {item.repo}
+                </Link>
               </td>
             </tr>
           ))}

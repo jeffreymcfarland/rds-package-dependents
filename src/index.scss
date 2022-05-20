@@ -3,6 +3,6 @@
 @import "@ramsey-design-system/heading/sass";
 @import "@ramsey-design-system/link/sass";
 
-.App {
-  text-align: center;
+html {
+  font-family: $rds-font-family-gibson;
 }
