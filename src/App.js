@@ -7,33 +7,40 @@ import Link from "@ramsey-design-system/link";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 function App() {
-  const [selectedName, setSelectedName] = useState("RDS");
+  const [selectedQuery, setSelectedQuery] = useState("ramsey-design-system");
   const [rdsPackageNames] = useState([
-    "RDS",
-    "Button",
-    "Card",
-    "Data Table",
-    "Heading",
-    "Icon",
-    "Icons",
-    "Link",
-    "Media Object",
-    "Progress Bar",
-    "Rich Text",
-    "Stack",
-    "Tag",
-    "Text",
-    "Tokens",
+    {
+      name: "RDS",
+      query: "ramsey-design-system",
+    },
+    { name: "Button", query: "ramsey-design-system+button" },
+    { name: "Card", query: "ramsey-design-system+card" },
+    { name: "Data Table", query: "ramsey-design-system+data-table" },
+    { name: "Heading", query: "ramsey-design-system+heading" },
+    { name: "Icon", query: "ramsey-design-system+icon" },
+    { name: "Icons", query: "ramsey-design-system+icons" },
+    { name: "Link", query: "ramsey-design-system+link" },
+    { name: "Media Object", query: "ramsey-design-system+media-object" },
+    { name: "Progress Bar", query: "ramsey-design-system+progress-bar" },
+    { name: "Rich Text", query: "ramsey-design-system+rich-text" },
+    { name: "Stack", query: "ramsey-design-system+stack" },
+    { name: "Tag", query: "ramsey-design-system+tag" },
+    { name: "Text", query: "ramsey-design-system+text" },
+    { name: "Tokens", query: "ramsey-design-system+tokens" },
+    { name: "(Legacy) Gazelle Design System", query: "gazelle-design-system" },
+    { name: "(Legacy) Gazelle Design Tokens", query: "gazelle-design-tokens" },
   ]);
   const [dependents, setDependents] = useState([]);
   const [packageDependentsTotal, setTotal] = useState();
 
-  const parseOrgRepos = async (packageName) => {
+  const parseOrgRepos = async (packageQuery) => {
     let data;
     let dependentsArray = [];
-    if (packageName === "RDS") {
-      data = await searchPackageDependents();
-      data.items.forEach((item) => {
+    let count = 0;
+    let page = 1;
+
+    const loop = (items) => {
+      items.forEach((item) => {
         if (item.repository.name !== "ramsey-design-system") {
           dependentsArray.push({
             repo: item.repository.name,
@@ -41,28 +48,32 @@ function App() {
           });
         }
       });
+    };
+
+    const search = async (query, pageCount) => {
+      data = await searchPackageDependents(query, pageCount);
+      const total = data.total_count;
+      count += data.items.length;
+
+      loop(data.items);
+
+      if (total > count) {
+        page += 1;
+        search(query, page);
+      }
+
       setTotal(dependentsArray.length);
       setDependents(dependentsArray);
-    } else {
-      data = await searchPackageDependents(
-        packageName.toLowerCase().split(" ").join("-")
-      );
-      data.items.forEach((item) => {
-        if (item.repository.name !== "ramsey-design-system") {
-          dependentsArray.push({
-            repo: item.repository.name,
-            url: item.repository.html_url,
-          });
-        }
-      });
-      setTotal(dependentsArray.length);
-      setDependents(dependentsArray);
-    }
+
+      return;
+    };
+
+    search(packageQuery, page);
   };
 
   useEffect(() => {
-    parseOrgRepos(selectedName);
-  }, [selectedName]);
+    parseOrgRepos(selectedQuery);
+  }, [selectedQuery]);
 
   return (
     <div className="App">
@@ -85,16 +96,16 @@ function App() {
                     size="small"
                     labelId="select-package-name"
                     id="select"
-                    value={selectedName}
+                    value={selectedQuery}
                     label="Name"
                     onChange={(e) => {
-                      setSelectedName(e.target.value);
+                      setSelectedQuery(e.target.value);
                     }}
                     autoWidth
                   >
-                    {rdsPackageNames.map((name, index) => (
-                      <MenuItem value={name} key={index}>
-                        {name}
+                    {rdsPackageNames.map((rdsPackage, index) => (
+                      <MenuItem value={rdsPackage.query} key={index}>
+                        {rdsPackage.name}
                       </MenuItem>
                     ))}
                   </Select>
